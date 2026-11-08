@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: autocheck360-api
+    runtime: docker
+    plan: free
+    region: ohio
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_URL
+        fromDatabase:
+          name: autocheck360-db
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: autocheck360-db
+    plan: free
+    region: ohio
+    databaseName: autocheck
+    user: postgres
